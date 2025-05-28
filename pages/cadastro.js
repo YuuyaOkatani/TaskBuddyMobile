@@ -29,10 +29,12 @@ const Screen2 = () => {
   const [newName, setNewName] = useState("");
   const [users, setUsers] = useState([]);
   const [email, setEmail] = useState("");
-  const [newPhoto, setPhoto] = useState("");
   const [password, setPassword] = useState("");
   const [loading, IsLoading] = useState(false);
+  const [passwordApproval, setPasswordApproval] = useState("");
+  const [newPhoto, setNewPhoto] = useState("");
   const usersCollectionRef = collection(db, "users");
+
   const validacao = "@gmail.com";
   const terminaCom = email.endsWith(validacao.trim());
   function press() {
@@ -51,7 +53,7 @@ const Screen2 = () => {
       });
       function escollhaNew(users, EmailAlvo) {
         for (let i = 0; i < users.length; i++) {
-          if (users[i].email === EmailAlvo) {
+          if (users[i]?.email === EmailAlvo) {
             return i;
           }
         }
@@ -59,32 +61,40 @@ const Screen2 = () => {
       const Posicao = escollhaNew(users, email);
       const Dados = users.length;
       if (Posicao == undefined) {
-        if (terminaCom && email.length > 10) {
+        if (terminaCom && email?.length > 10) {
           if (password.length > 7) {
-            addDoc(usersCollectionRef, {
-              name: newName,
-              email: email,
-              password: password,
-              photo: newPhoto,
-              age: "",
-              expec: "",
-            })
-              .then(() =>
-                firebase.auth().createUserWithEmailAndPassword(email, password)
-              )
-              .then(
-                () =>
+            if (password === passwordApproval) {
+              addDoc(usersCollectionRef, {
+                name: newName,
+                email: email,
+                password: password,
+                photo: newPhoto,
+                age: "",
+                expec: "",
+              })
+                .then(() =>
                   firebase
                     .auth()
-                    .signInWithEmailAndPassword(email, password)
-                    .then((userCredentials) => {
-                      const userC = userCredentials.user;
-                      navigation.navigate("usuario");
-                    }),
-                setEmail(""),
-                setPassword("")
-              )
-              .catch((error) => {});
+                    .createUserWithEmailAndPassword(email, password)
+                )
+                .then(
+                  () =>
+                    firebase
+                      .auth()
+                      .signInWithEmailAndPassword(email, password)
+                      .then((userCredentials) => {
+                        const userC = userCredentials.user;
+                        navigation.navigate("usuario");
+                      }),
+                  setEmail(""),
+                  setPassword(""),
+                  setPasswordApproval(""),
+                  setNewName("")
+                )
+                .catch((error) => {});
+            } else {
+              alert("Senha invalida.");
+            }
           } else {
             alert("A senha deve ter pelo menos 8 caracteres");
           }
@@ -136,6 +146,15 @@ const Screen2 = () => {
         onChangeText={(event) => setPassword(event)}
       />
 
+      <TextInput
+        style={styles.input}
+        value={passwordApproval}
+        textContentType="password"
+        secureTextEntry={true}
+        placeholder="Confirmar Senha..."
+        onChangeText={(event) => setPasswordApproval(event)}
+      />
+
       <TouchableOpacity style={styles.botao} onPress={createUser}>
         <Text style={styles.btnTexto}>cadastrar</Text>
       </TouchableOpacity>
@@ -152,7 +171,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#dcedfa",
-    marginTop: 50,
   },
   teste: {
     width: 300,

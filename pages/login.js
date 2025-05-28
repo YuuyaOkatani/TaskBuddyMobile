@@ -26,6 +26,8 @@ import * as WebBrowser from "expo-web-browser";
 import Loading from "./Loading";
 import firebase from "firebase/compat/app";
 import { AuthContext } from "../tokens/auth-context";
+import { ScrollView } from "react-native-gesture-handler";
+
 WebBrowser.maybeCompleteAuthSession();
 const Screen1 = () => {
   const navigation = useNavigation();
@@ -96,6 +98,8 @@ const Screen1 = () => {
         value={password}
         onChangeText={(event) => setPassword(event)}
         placeholder="senha..."
+        textContentType="password"
+        secureTextEntry={true}
         style={styles.input}
       />
       <TouchableOpacity onPress={() => promptAsync()} style={styles.btnGoogle}>
@@ -132,15 +136,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 20,
+    marginBottom: 50,
   },
   container: {
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
+    justifyContent: "center",
     backgroundColor: "#dcedfa",
   },
   img: {
-    marginTop: 10,
     width: 150,
     height: 150,
     borderRadius: 10,

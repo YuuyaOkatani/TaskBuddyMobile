@@ -156,9 +156,8 @@ const Screen4 = () => {
       base64: true,
       quality: 1,
     });
-
     if (!result.canceled) {
-      setPhoto(result.base64);
+      setPhoto(result.assets[0].base64);
     } else if (photo.length > 2) {
       setPhoto(require("../img/default.jpg"));
     }

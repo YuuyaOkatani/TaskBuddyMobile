@@ -24,23 +24,23 @@ const Screen9 = ({ route }) => {
   const navigation = useNavigation();
 
   const filtro = items.filter(
-    (e) => e.userID1 == user.id || e.userID2 == user.id
+    (e) => e.userID1 == user?.id || e.userID2 == user?.id
   );
   const filtrosss = filtro.filter(
     (e) =>
-      e.Desc.toLowerCase().includes(palavraChave.toLowerCase()) ||
-      e.Info.toLowerCase().includes(palavraChave.toLowerCase()) ||
-      e.Diaria.toLowerCase().includes(palavraChave.toLowerCase()) ||
-      e.EmailDeQuemVaiContratar.toLowerCase().includes(
+      e?.Desc.toLowerCase().includes(palavraChave.toLowerCase()) ||
+      e?.Info.toLowerCase().includes(palavraChave.toLowerCase()) ||
+      e?.Diaria.toLowerCase().includes(palavraChave.toLowerCase()) ||
+      e?.EmailDeQuemVaiContratar.toLowerCase().includes(
         palavraChave.toLowerCase()
       ) ||
-      e.EmailDoContratado.toLowerCase().includes(palavraChave.toLowerCase()) ||
-      e.EstadoDoContrato.toLowerCase().includes(palavraChave.toLowerCase()) ||
-      e.NomeDeQuemVaiContratar.toLowerCase().includes(
+      e?.EmailDoContratado.toLowerCase().includes(palavraChave.toLowerCase()) ||
+      e?.EstadoDoContrato.toLowerCase().includes(palavraChave.toLowerCase()) ||
+      e?.NomeDeQuemVaiContratar.toLowerCase().includes(
         palavraChave.toLowerCase()
       ) ||
-      e.NomeDoContratado.toLowerCase().includes(palavraChave.toLowerCase()) ||
-      e.Pagamento.toLowerCase().includes(palavraChave.toLowerCase())
+      e?.NomeDoContratado.toLowerCase().includes(palavraChave.toLowerCase()) ||
+      e?.Pagamento.toLowerCase().includes(palavraChave.toLowerCase())
   );
   const entrarContrato = (itemID) => {
     IsLoading(true);
@@ -68,16 +68,16 @@ const Screen9 = ({ route }) => {
       (QuerySnapshot) => {
         let state = [];
         QuerySnapshot.forEach((doc) => {
-          state.push({ id: doc.id, ...doc.data() });
+          state.push({ id: doc?.id, ...doc.data() });
         });
         function escolha(users, userAlvo) {
           for (let i = 0; i < users.length; i++) {
-            if (users[i].email == userAlvo) {
+            if (users[i]?.email == userAlvo) {
               return i;
             }
           }
         }
-        const s = escolha(state, currentUser.email);
+        const s = escolha(state, currentUser?.email);
         setUser(state[s]);
       }
     );
@@ -102,10 +102,10 @@ const Screen9 = ({ route }) => {
       <View style={{ width: 260, height: 400 }}>
         <FlatList
           data={filtrosss}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item?.id}
           renderItem={({ item }) => (
             <View>
-              <TouchableOpacity onPress={() => entrarContrato(item.id)}>
+              <TouchableOpacity onPress={() => entrarContrato(item?.id)}>
                 <View style={styles.containerThree}>
                   <Text>
                     {" "}

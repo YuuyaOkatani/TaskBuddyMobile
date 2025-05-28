@@ -90,11 +90,19 @@ const Screen3 = ({ route }) => {
               <TouchableOpacity onPress={() => entrarPerfil(item)}>
                 <View style={styles.containerTwo}>
                   {item.photo ? (
-                    <Image
-                      source={{ uri: `data:image/jpeg;base64,${item.photo}` }}
-                      style={styles.imgPerfil}
-                      resizeMode="cover"
-                    />
+                    item.photo.startsWith("htt") ? (
+                      <Image
+                        source={{ uri: item.photo }}
+                        style={styles.imgPerfil} /// problema resolvido de imagem de perfi que logo com google
+                        resizeMode="cover"
+                      />
+                    ) : (
+                      <Image
+                        source={{ uri: `data:image/jpeg;base64,${item.photo}` }}
+                        style={styles.imgPerfil}
+                        resizeMode="cover"
+                      />
+                    )
                   ) : (
                     <Image
                       source={require("../img/default.jpg")}
